@@ -17,18 +17,17 @@ using namespace std;
 class Game {
 
     struct Cell {
-        vector<Bee*>* bees;
-        vector<Ant*>* ants;
+        bool bg;
+        bool nj;
+        vector<Bee>* bees;
+        vector<Ant>* ants;
     };
 
-    int food;
-    int beeCount;
     Cell* gameBoard;
 
 public:
     Game();
     Cell* initGameBoard();
-    Ant* createAnt();
     void placeAnt(Ant* newAnt);
     int userInput(int lower, int upper);
     Ant* selectAnt(int type);
@@ -41,9 +40,12 @@ public:
     bool canPlaceAnt();
     bool checkForAnt();
     Ant* fullBoard();
-    int getFood() const;
+    void moveBees(int currCell, int startBee);
     bool checkQueen();
+    int findBG(int currCell);
     void printBoard();
+    bool inputYN();
+    void placeBG(Ant *bg);
 
 };
 
