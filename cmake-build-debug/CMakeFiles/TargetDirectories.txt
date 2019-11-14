@@ -1,0 +1,3 @@
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/cmake-build-debug/CMakeFiles/ants_vs_bees.dir
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/cmake-build-debug/CMakeFiles/rebuild_cache.dir

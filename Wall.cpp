@@ -3,3 +3,7 @@
 //
 
 #include "Wall.h"
+
+void Wall::takeTurn(vector<Bee>* attack){
+
+}

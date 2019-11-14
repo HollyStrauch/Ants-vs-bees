@@ -9,7 +9,8 @@
 #include "Ant.h"
 
 class LongThrower : public Ant {
-
+public:
+    virtual void takeTurn(vector<Bee>* curr);
 };
 
 

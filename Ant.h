@@ -5,12 +5,17 @@
 #ifndef ANTS_VS_BEES_ANT_H
 #define ANTS_VS_BEES_ANT_H
 
+#include <string>
+#include <vector>
 #include "Insect.h"
+#include "Bee.h"
+using namespace std;
 
 class Ant : public Insect{
 protected:
     int cost;
     int type;
+    static int food;
 public:
     Ant();
     virtual int getAttack() const;
@@ -19,7 +24,11 @@ public:
     virtual int getArmor() const;
     int getType() const;
     int getCost() const;
-    virtual void takeTurn() = 0;
+    virtual void takeTurn(vector<Bee>* attack);
+    static void addFood(int amount);
+    static void removeFood(int amount);
+    static int getFood();
+    string typeToString();
 };
 
 

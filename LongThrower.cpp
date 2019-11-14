@@ -3,3 +3,7 @@
 //
 
 #include "LongThrower.h"
+
+void LongThrower::takeTurn(vector<Bee>* curr){
+
+}

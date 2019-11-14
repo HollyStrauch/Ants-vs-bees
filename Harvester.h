@@ -11,7 +11,7 @@
 class Harvester : public Ant{
 public:
     Harvester();
-    virtual void takeTurn();
+    virtual void takeTurn(vector<Bee>* curr);
 };
 
 

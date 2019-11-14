@@ -7,9 +7,12 @@
 
 
 #include "Ant.h"
+#include "Game.h"
 
 class Fire : public Ant{
-
+public:
+    Fire();
+    virtual void takeTurn(vector<Bee>* curr);
 };
 
 

@@ -9,7 +9,8 @@
 #include "Ant.h"
 
 class Wall : public Ant {
-
+public:
+    virtual void takeTurn(vector<Bee>* attack);
 };
 
 

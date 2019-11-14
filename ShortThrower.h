@@ -9,7 +9,8 @@
 #include "Ant.h"
 
 class ShortThrower : public Ant{
-
+public:
+    virtual void takeTurn(vector<Bee>* attack);
 };
 
 

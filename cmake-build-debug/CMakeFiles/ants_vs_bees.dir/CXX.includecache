@@ -1,0 +1,92 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+string
+-
+vector
+-
+Insect.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Insect.h
+Bee.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Bee.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Bee.h
+Insect.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Insect.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Bodyguard.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Fire.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+Game.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Game.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Game.cpp
+Game.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Game.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+Harvester.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Harvester.h
+Thrower.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Thrower.h
+Fire.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Fire.h
+LongThrower.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/LongThrower.h
+ShortThrower.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/ShortThrower.h
+Wall.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Wall.h
+Ninja.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ninja.h
+Bodyguard.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Bodyguard.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Game.h
+string
+-
+iostream
+-
+vector
+-
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+Bee.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Bee.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Harvester.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Insect.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/LongThrower.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ninja.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/ShortThrower.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Thrower.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Wall.h
+Ant.h
+C:/Users/Holly Strauch/Documents/CS361/Ants-vs-bees/Ant.h
+

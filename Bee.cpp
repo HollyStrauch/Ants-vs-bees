@@ -4,10 +4,29 @@
 
 #include "Bee.h"
 
+int Bee::beeCount = 0;
+
 Bee::Bee(){
     this->range = 1;
     this->armor = 3;
     this->attack = 1;
+}
+
+/**
+ * Assignment operator override
+ * @param right
+ * @return
+ */
+Bee& Bee::operator= (const Bee &right){
+
+    if (&right == this)
+        return (*this);
+
+    this->armor = right.armor;
+    this->attack = right.attack;
+    this->range = right.range;
+
+    return (*this);
 }
 
 int Bee::getAttack() const{
@@ -24,4 +43,16 @@ int Bee::getRange() const{
 
 int Bee::getArmor() const {
     return this->armor;
+}
+
+void Bee::addBee() {
+    beeCount++;
+}
+
+void Bee::killBee() {
+    beeCount--;
+}
+
+int Bee::getCount(){
+    return beeCount;
 }

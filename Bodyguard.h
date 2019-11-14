@@ -9,7 +9,10 @@
 #include "Ant.h"
 
 class Bodyguard : public Ant{
-
+public:
+    Bodyguard();
+    Bodyguard(Bodyguard &orig);
+    virtual void takeTurn(vector<Bee>* curr);
 };
 
 

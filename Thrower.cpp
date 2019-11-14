@@ -3,3 +3,7 @@
 //
 
 #include "Thrower.h"
+
+void Thrower::takeTurn(vector<Bee>* attack){
+
+}

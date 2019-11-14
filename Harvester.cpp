@@ -12,6 +12,6 @@ Harvester::Harvester() {
     attack = 0;
 }
 
-void Harvester::takeTurn() {
-
+void Harvester::takeTurn(vector<Bee>* curr){
+    Ant::addFood(1);
 }

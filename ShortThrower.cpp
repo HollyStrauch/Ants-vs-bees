@@ -3,3 +3,7 @@
 //
 
 #include "ShortThrower.h"
+
+void ShortThrower::takeTurn(vector<Bee>* attack){
+
+}

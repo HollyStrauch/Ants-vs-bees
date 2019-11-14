@@ -9,7 +9,10 @@
 #include "Ant.h"
 
 class Ninja : public Ant {
-
+public:
+    Ninja();
+    virtual void takeTurn(vector<Bee>* curr);
+    virtual void takeDamage(int damage);
 };
 
 
