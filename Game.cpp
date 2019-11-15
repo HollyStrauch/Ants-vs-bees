@@ -1,6 +1,17 @@
-//
-// Created by Holly Strauch on 11/11/2019.
-//
+/**
+ * Program: Ants-vs-bees
+ * Author: Holly Strauch
+ * Date: 11/15/19
+ * File: Game.cpp
+ *
+ * Ants-vs-bees is a game on a 1D board.  The player runs the ants and their goal is to protect the queen on the 1st
+ * space of the board.  They are being attacked by computer-generated bees that appear one per turn at the opposite
+ * side of the board.  The player can choose from different kinds of ants and place them anywhere on the board.  Ants
+ * cannot share a space with other ants unless otherwise specified.  The player wins if there are no bees left on the
+ * board after a turn.  The computer wins if the bees reach the queen.
+ *
+ * Game controls the board and general gameplay.  Bees generate, user can place ants, and ants and bees attack or move.
+ */
 
 #include "Game.h"
 #include "Ant.h"
@@ -13,43 +24,85 @@
 #include "Ninja.h"
 #include "Bodyguard.h"
 
-
+///Constructor
 Game::Game(){
     gameBoard = initGameBoard();
 }
 
-Game::Cell* Game::initGameBoard(){
+///Destructor
+Game::~Game(){
+    for (int i = 0; i < 10; i++){
+        gameBoard[i].bees->clear();
+        gameBoard[i].ants->clear();
+        delete gameBoard[i].bees;
+        delete gameBoard[i].ants;
+    }
+    delete [] gameBoard;
+}
+
+
+///Initializes the gameboard of Cells
+Cell* Game::initGameBoard(){
     Cell* gameBoard = new Cell[10];
     for (int i = 0; i < 10; i++){
         gameBoard[i].bg = false;
         gameBoard[i].nj = false;
-        gameBoard[i].bees = new vector<Bee>;
-        gameBoard[i].ants = new vector<Ant>;
+        gameBoard[i].bees = new vector<Insect*>;
+        gameBoard[i].ants = new vector<Insect*>;
     }
 
     return gameBoard;
 }
 
+/// Runs the main game play: generate Bee, place Ant, then have ants then bees attack left to right.
 void Game::runGame(){
 
+    intro();
     do {
         generateBee();
         cout << "Would you like to place a new ant? Current food: " << Ant::getFood() << endl;
         if (inputYN()) {
             generateAnt();
         }
-    //    antAttack();
-    //    beeAttack();
         printBoard();
+        cout << "\nANTS ATTACK" << endl;
+        antAttack();
+        cout << "\nBEES ATTACK" << endl;
+        beeAttack();
     }while(Bee::getCount() != 0 && checkQueen());
+
+    finish();
+}
+
+///Prints out an introduction to the game
+void Game::intro(){
+
+    cout << "#############################################################################" << endl;
+    cout << "\nWELCOME TO ANTS VS BEES!\n\nYou are the ants.  I am the bees." << endl;
+    cout << "Your goal is to wipe my kind off the board. My goal is to reach your queen." << endl;
+    cout << "\n\nCome at me.\n" << endl;
+    cout << "#############################################################################\n\n" << endl;
 
 }
 
-bool Game::checkQueen() {
-    if (this->gameBoard[0].bees->size() > 0){
-        return false;
+///Prints out the closing text after the game has ended
+void Game::finish(){
+    cout << "\n\n#############################################################################" << endl;
+    if (Bee::getCount() == 0){
+        cout << "You have bested me! Congratulations." << endl;
+    } else {
+        cout << "I have won! Your queen is mine.\nWe are going to another castle. Ha Ha Ha." << endl;
     }
-    return true;
+
+    cout << "#############################################################################" << endl;
+}
+
+/***
+ * \brief checks to see if a bee has reached the queen
+ * @return true if there are no bees in the same space as the queen
+ */
+bool Game::checkQueen() {
+    return this->gameBoard[0].bees->empty();
 }
 
 /**
@@ -57,7 +110,7 @@ bool Game::checkQueen() {
  */
 void Game::generateBee() {
     cout << "A NEW BEE HAS LEFT THE HIVE" << endl;
-    Bee newBee = Bee();
+    Bee* newBee = new Bee();
     this->gameBoard[9].bees->push_back(newBee);
     Bee::addBee();
 }
@@ -75,13 +128,13 @@ void Game::generateAnt() {
             cout << "You cannot afford that ant";
             delete ant;
             ant = nullptr;
-            continue;
-        }
-        if (type == 8) {
+        } else if (type == 8) {
             placeBG(ant);
+            return;
         } else if (!canPlaceAnt()) {
             cout << "Board is full, cannot place ant" << endl;
-            continue;
+            delete ant;
+            ant = nullptr;
         }else {
             placeAnt(ant);
             return;
@@ -89,25 +142,32 @@ void Game::generateAnt() {
     }
 }
 
+/**
+ * \brief places a Bodyguard ant on the board, flipping the boolean flag
+ * @param bg A pointer to a Bodyguard Ant
+ */
 void Game::placeBG(Ant *bg) {
-    cout << "Enter the position on the board you would like to place the bodyguard, or -1 to exit" << endl;
+    cout << "Enter the position on the board you would like to place the bodyguard, or 0 to exit" << endl;
+    cout << "\t[Q 1|2|3|4|5|6|7|8|9|10]" << endl;
+
     while ( true ){
-        int pos = userInput(-1, 9);
+        int pos = userInput(0, 10) - 1;
         if (pos == -1){
             break;
         }
         if (!gameBoard[pos].bg){
-            gameBoard[pos].ants->push_back(*bg);
+            gameBoard[pos].ants->push_back(bg);
             gameBoard[pos].bg = true;
             Ant::removeFood(bg->getCost());
             break;
         }
-        cout << "There is already a body guard in that space.  Please select a new space, or enter -1 to exit";
+        cout << "There is already a body guard in that space.  Please select a new space, or enter 0 to exit";
     }
 }
 
+/// Prints out all the info for each ant type
 void Game::printAntInfo() {
-    cout << "Enter the number for the type of ant you'd like: \nNum\tType\t\tCost\tArmor\tDescription" << endl;
+    cout << "Enter the NUMBER for the type of ant you'd like: \nNum\tType\t\tCost\tArmor\tDescription" << endl;
     cout << "1:\tHarvester\t2\t1\tAdds 1 food to colony each turn." << endl;
     cout << "2:\tThrower\t\t4\t1\tDelivers 1 damage to bee in the same square." << endl;
     cout << "3:\tFire\t\t4\t1\tEliminates all bees in the same square upon dying." << endl;
@@ -125,10 +185,11 @@ void Game::printBoard() {
     cout << "******************\n" << "\tQ" << endl;
 
     for (int i = 0; i < 10; i++){
+        cout << "\t" << i + 1 << endl;
         for (int j = 0; j < gameBoard[i].ants->size(); j++){
-            cout << gameBoard[i].ants->at(j).typeToString() << " ";
+            cout << gameBoard[i].ants->at(j)->typeToString() << " ";
         }
-        cout << "\n" << endl;
+        cout << endl;
         for (int j = 0; j < gameBoard[i].bees->size(); j++){
             cout << "Bee" << " ";
         }
@@ -137,6 +198,10 @@ void Game::printBoard() {
     }
 }
 
+/**
+ * \brief checks to see if an ant can be placed on the board at all
+ * @return true if there is an empty spot on the board
+ */
 bool Game::canPlaceAnt(){
 
     for (int i = 0; i < 10; i++){
@@ -147,6 +212,11 @@ bool Game::canPlaceAnt(){
     return false;
 }
 
+/**
+ * \brief selects a type of ant based on user input
+ * @param type the numberical representation of an ant type
+ * @return a pointer to the type of Ant
+ */
 Ant* Game::selectAnt(int type) {
     Ant* newAnt;
     switch(type){
@@ -170,9 +240,13 @@ Ant* Game::selectAnt(int type) {
     return newAnt;
 }
 
+/**
+ * \brief places an ant on the board
+ * @param newAnt, and ant pointer to the new ant that will be placed
+ */
 void Game::placeAnt(Ant* newAnt){
     cout << "Enter the location on the board where you would like to place the ant" << endl;
-    cout << "\t[1|2|3|4|5|6|7|8|9|10]" << endl;
+    cout << "\t[Q 1|2|3|4|5|6|7|8|9|10]" << endl;
 
     while (true) {
         int loc = userInput(1, 10) - 1;
@@ -181,16 +255,12 @@ void Game::placeAnt(Ant* newAnt){
             if (newAnt->getType() == 7){
                 gameBoard[loc].nj = true;
             }
-            gameBoard[loc].ants->push_back(*newAnt);
+            gameBoard[loc].ants->push_back(newAnt);
             Ant::removeFood(newAnt->getCost());
             break;
         }
         cout << "Space is occupied, please chose a different spot: " << endl;
     }
-}
-
-bool Game::checkForAnt() {
-    return false;
 }
 
 /**
@@ -214,7 +284,12 @@ bool Game::inputYN(){
 }
 
 
-//check for out of bound values
+/**
+ * \brief Gets user input for a range of numbers
+ * @param lower, the lowest number accepted
+ * @param upper, the greatest number accepted
+ * @return a valid integer
+ */
 int Game::userInput(int lower, int upper) {
 
     while (true) {
@@ -223,7 +298,7 @@ int Game::userInput(int lower, int upper) {
 
         try {
             int num = stod(input);
-            if (num >= lower || num <= upper) {
+            if (num >= lower && num <= upper) {
                 return num;
             }
         } catch (invalid_argument const &e) {
@@ -235,27 +310,11 @@ int Game::userInput(int lower, int upper) {
 void Game::antAttack() {
     for (int i = 0; i < 10; i++){
         for (int j = 0; j < gameBoard[i].ants->size(); j++){
-            gameBoard[i].ants->at(j).takeTurn(gameBoard[i].bees);
+           gameBoard[i].ants->at(j)->takeTurn(gameBoard, i);
         }
     }
-    //todo attack left to right\
-    //todo check for dead bees
 }
 
-/**
- * \brief finds the location of a bodyguard ant, returns 0 if none. Does not pose issue with indexing, bees will attack
- *  first space if no bodyguard exists.
- * @param currCell
- * @return
- */
-int Game::findBG(int currCell) {
-    for ( int i = 0; i < gameBoard[currCell].ants->size(); i++){
-        if (gameBoard[i].ants->at(i).getType() == 8) {
-            return i;
-        }
-    }
-    return 0;
-}
 
 /**
  * \brief Iterates through all Bees from left to right and either attacks or moves if there are no ants in the cell;
@@ -263,37 +322,17 @@ int Game::findBG(int currCell) {
 void Game::beeAttack() {
     for (int i = 0; i < 10; i ++){
         for (int j = 0; j < gameBoard[i].bees->size(); j++){
+
             if (gameBoard[i].ants->empty() || (gameBoard[i].ants->size() == 1 && gameBoard[i].nj)) {
-                //todo check for ninja
-                moveBees(i, j);
+                Bee::moveBees(gameBoard, i, j);
                 break;
             }
-            int bInd = findBG(i);
 
-            gameBoard[i].ants->at(bInd).takeDamage(1);
-            if (gameBoard[i].ants->at(bInd).getArmor() <= 0) {
+            gameBoard[i].bees->at(j)->takeTurn(gameBoard, i);
 
-                gameBoard[i].ants->erase(gameBoard[i].ants->begin() + bInd);
-                //todo check for fire ant
-            }
         }
     }
 }
 
-/**
- * \brief Method moves all bees from the startBee on in a cell to the next cell.  Bees receive damage if a ninja is was
- *  present
- * @param currCell, the cell the bees are moving from
- * @param startBee, the first bee in the current cell bee vector that is moving
- */
-void Game::moveBees(int currCell, int startBee) {
 
-    for (int i = gameBoard[currCell].bees->size(); i >= startBee; i--){
-        gameBoard[currCell - 1].bees[i] = gameBoard[currCell].bees[i];
 
-        if (gameBoard[currCell].nj){
-            gameBoard[currCell - 1].bees->at(i).takeDamage(1);
-        }
-        gameBoard[currCell].bees->pop_back();
-    }
-}
